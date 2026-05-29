@@ -1,0 +1,80 @@
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { Stethoscope, Lock, Mail } from 'lucide-react';
+import styles from './Login.module.css';
+
+const Login = () => {
+  const navigate = useNavigate();
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleLogin = (e) => {
+    e.preventDefault();
+    setIsLoading(true);
+    // Giả lập gọi API đăng nhập
+    setTimeout(() => {
+      setIsLoading(false);
+      localStorage.setItem('isAuthenticated', 'true');
+      navigate('/dashboard');
+    }, 1000);
+  };
+
+  return (
+    <div className={styles.loginContainer}>
+      <div className={styles.loginCard}>
+        <div className={styles.logoContainer}>
+          <div className={styles.logoIcon}>
+            <Stethoscope size={32} color="white" />
+          </div>
+          <h1 className={styles.brandName}>DermaCare Admin</h1>
+          <p className={styles.subtitle}>Hệ thống quản lý phòng khám da liễu</p>
+        </div>
+
+        <form onSubmit={handleLogin} className={styles.form}>
+          <div className={styles.inputGroup}>
+            <label>Email hoặc Tên đăng nhập</label>
+            <div className={styles.inputWrapper}>
+              <Mail className={styles.inputIcon} size={20} />
+              <input 
+                type="text" 
+                placeholder="admin@dermacare.vn" 
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+              />
+            </div>
+          </div>
+
+          <div className={styles.inputGroup}>
+            <label>Mật khẩu</label>
+            <div className={styles.inputWrapper}>
+              <Lock className={styles.inputIcon} size={20} />
+              <input 
+                type="password" 
+                placeholder="••••••••" 
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+              />
+            </div>
+          </div>
+
+          <div className={styles.options}>
+            <label className={styles.checkbox}>
+              <input type="checkbox" />
+              <span>Ghi nhớ đăng nhập</span>
+            </label>
+            <a href="#" className={styles.forgotPassword}>Quên mật khẩu?</a>
+          </div>
+
+          <button type="submit" className={styles.submitBtn} disabled={isLoading}>
+            {isLoading ? 'Đang xử lý...' : 'Đăng nhập'}
+          </button>
+        </form>
+      </div>
+    </div>
+  );
+};
+
+export default Login;
