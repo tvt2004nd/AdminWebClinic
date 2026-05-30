@@ -2,6 +2,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import Layout from './components/Layout/Layout';
 import Dashboard from './pages/Dashboard/Dashboard';
 import Doctors from './pages/Doctors/Doctors';
+import Prescriptions from './pages/Prescriptions/Prescriptions';
 import Login from './pages/Login/Login';
 
 // Placeholder Pages
@@ -9,7 +10,6 @@ const Users = () => <div style={{padding: 24}}><h2>Quản lý Tài khoản (User
 const Patients = () => <div style={{padding: 24}}><h2>Quản lý Bệnh nhân (Patients)</h2><p>Trang này đang được phát triển...</p></div>;
 const Appointments = () => <div style={{padding: 24}}><h2>Quản lý Lịch hẹn (Appointments)</h2><p>Trang này đang được phát triển...</p></div>;
 const MedicalRecords = () => <div style={{padding: 24}}><h2>Bệnh án & Chẩn đoán AI (Medical Records)</h2><p>Trang này đang được phát triển...</p></div>;
-const Prescriptions = () => <div style={{padding: 24}}><h2>Quản lý Thuốc (Prescriptions)</h2><p>Trang này đang được phát triển...</p></div>;
 const Invoices = () => <div style={{padding: 24}}><h2>Hóa đơn & Thanh toán (Invoices)</h2><p>Trang này đang được phát triển...</p></div>;
 
 // Private Route Wrapper
