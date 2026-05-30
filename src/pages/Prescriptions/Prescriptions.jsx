@@ -22,6 +22,10 @@ const Prescriptions = () => {
   const [categories, setCategories] = useState([]);
   const [keyword, setKeyword] = useState('');
   const [loading, setLoading] = useState(true);
+  const [page, setPage] = useState(0);
+  const [totalPages, setTotalPages] = useState(0);
+  const [totalElements, setTotalElements] = useState(0);
+  const pageSize = 20;
   const [modalOpen, setModalOpen] = useState(false);
   const [editing, setEditing] = useState(null);
   const [form, setForm] = useState({ ...emptyForm });
@@ -39,17 +43,25 @@ const Prescriptions = () => {
 
   const fetchMedications = useCallback(async () => {
     try {
-      const url = keyword ? `${API_BASE}?keyword=${encodeURIComponent(keyword)}` : API_BASE;
+      const params = new URLSearchParams();
+      if (keyword) params.set('keyword', keyword);
+      params.set('page', String(page));
+      params.set('size', String(pageSize));
+      const url = `${API_BASE}?${params}`;
       const res = await fetchWithAuth(url);
       if (res.ok) {
-        setMedications(await res.json());
+        const data = await res.json();
+        setMedications(data.content);
+        setPage(data.page);
+        setTotalPages(data.totalPages);
+        setTotalElements(data.totalElements);
       }
     } catch {
       showToast('Không thể tải danh sách thuốc', 'error');
     } finally {
       setLoading(false);
     }
-  }, [keyword]);
+  }, [keyword, page]);
 
   const fetchCategories = async () => {
     try {
@@ -225,7 +237,7 @@ const Prescriptions = () => {
               placeholder="Tìm kiếm theo mã, tên hoặc hoạt chất..."
               className={styles.searchInput}
               value={keyword}
-              onChange={(e) => setKeyword(e.target.value)}
+              onChange={(e) => { setKeyword(e.target.value); setPage(0); }}
             />
           </div>
         </div>
@@ -284,6 +296,76 @@ const Prescriptions = () => {
             </tbody>
           </table>
         </div>
+
+      {totalPages > 1 && (
+        <div style={{
+          display: 'flex', justifyContent: 'space-between', alignItems: 'center',
+          padding: '12px 16px',
+          fontSize: '0.875rem', color: 'var(--text-secondary)'
+        }}>
+          <span>Tổng số: {totalElements} thuốc</span>
+          <div style={{ display: 'flex', gap: 4, alignItems: 'center' }}>
+            <button
+              disabled={page === 0}
+              onClick={() => setPage(p => Math.max(0, p - 1))}
+              style={{
+                padding: '6px 12px', border: '1px solid var(--border-color)',
+                borderRadius: 6, background: page === 0 ? 'var(--bg-secondary)' : 'var(--bg-primary)',
+                color: page === 0 ? 'var(--text-tertiary)' : 'var(--text-primary)',
+                cursor: page === 0 ? 'not-allowed' : 'pointer', fontSize: '0.8125rem'
+              }}
+            >Trước</button>
+            {(() => {
+              const items = [];
+              const total = totalPages;
+              const current = page;
+              const addPage = (i) => items.push(
+                <button key={i} onClick={() => setPage(i)} style={{
+                  width: 32, height: 32, border: '1px solid var(--border-color)',
+                  borderRadius: 6,
+                  background: i === current ? 'var(--primary)' : 'var(--bg-primary)',
+                  color: i === current ? '#fff' : 'var(--text-primary)',
+                  fontWeight: i === current ? 600 : 400,
+                  cursor: 'pointer', fontSize: '0.8125rem'
+                }}>{i + 1}</button>
+              );
+              const addEllipsis = (k) => items.push(
+                <span key={`e${k}`} style={{ padding: '0 4px', color: 'var(--text-tertiary)' }}>...</span>
+              );
+              addPage(0);
+              if (total <= 7) {
+                for (let i = 1; i < total - 1; i++) addPage(i);
+              } else {
+                if (current <= 2) {
+                  for (let i = 1; i <= 3; i++) addPage(i);
+                  addEllipsis(1);
+                } else if (current >= total - 3) {
+                  addEllipsis(2);
+                  for (let i = total - 4; i < total - 1; i++) addPage(i);
+                } else {
+                  addEllipsis(3);
+                  addPage(current - 1);
+                  addPage(current);
+                  addPage(current + 1);
+                  addEllipsis(4);
+                }
+              }
+              if (total > 1) addPage(total - 1);
+              return items;
+            })()}
+            <button
+              disabled={page >= totalPages - 1}
+              onClick={() => setPage(p => Math.min(totalPages - 1, p + 1))}
+              style={{
+                padding: '6px 12px', border: '1px solid var(--border-color)',
+                borderRadius: 6, background: page >= totalPages - 1 ? 'var(--bg-secondary)' : 'var(--bg-primary)',
+                color: page >= totalPages - 1 ? 'var(--text-tertiary)' : 'var(--text-primary)',
+                cursor: page >= totalPages - 1 ? 'not-allowed' : 'pointer', fontSize: '0.8125rem'
+              }}
+            >Sau</button>
+          </div>
+        </div>
+      )}
       </div>
 
       {modalOpen && (
