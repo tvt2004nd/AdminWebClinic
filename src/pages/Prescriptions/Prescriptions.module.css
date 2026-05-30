@@ -164,6 +164,20 @@
   color: var(--text-tertiary);
 }
 
+.medThumb {
+  width: 40px;
+  height: 40px;
+  object-fit: cover;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-color);
+  display: block;
+}
+
+.noImg {
+  color: var(--text-tertiary);
+  font-size: 0.75rem;
+}
+
 .badge {
   display: inline-block;
   padding: 4px 12px;
@@ -177,6 +191,36 @@
 .badgeInactive {
   background-color: #fef2f2;
   color: #dc2626;
+}
+
+.badgeOral {
+  background-color: #eff6ff;
+  color: #1d4ed8;
+}
+
+.badgeTopical {
+  background-color: #fef3c7;
+  color: #b45309;
+}
+
+.badgeInStock {
+  display: inline-block;
+  padding: 4px 12px;
+  background-color: #f0fdf4;
+  color: #15803d;
+  border-radius: var(--radius-full);
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+.badgeOutOfStock {
+  display: inline-block;
+  padding: 4px 12px;
+  background-color: #fef2f2;
+  color: #dc2626;
+  border-radius: var(--radius-full);
+  font-size: 0.75rem;
+  font-weight: 500;
 }
 
 .price {

@@ -5,6 +5,19 @@ import styles from './Prescriptions.module.css';
 
 const API_BASE = '/api/admin/medications';
 
+const TYPE_OPTIONS = [
+  { value: '', label: '-- Chọn loại --' },
+  { value: 'ORAL', label: 'Thuốc uống' },
+  { value: 'TOPICAL', label: 'Thuốc bôi' },
+  { value: 'OTHER', label: 'Khác' },
+];
+
+const typeLabels = {
+  ORAL: 'Thuốc uống',
+  TOPICAL: 'Thuốc bôi',
+  OTHER: 'Khác',
+};
+
 const emptyForm = {
   medCode: '',
   medName: '',
@@ -15,6 +28,7 @@ const emptyForm = {
   price: '',
   stockQuantity: '',
   isActive: true,
+  medicationType: '',
 };
 
 const Prescriptions = () => {
@@ -45,7 +59,7 @@ const Prescriptions = () => {
     try {
       const params = new URLSearchParams();
       if (keyword) params.set('keyword', keyword);
-      params.set('page', String(page));
+      params.set('page', String(page ?? 0));
       params.set('size', String(pageSize));
       const url = `${API_BASE}?${params}`;
       const res = await fetchWithAuth(url);
@@ -96,6 +110,7 @@ const Prescriptions = () => {
       price: String(med.price),
       stockQuantity: String(med.stockQuantity ?? ''),
       isActive: med.isActive,
+      medicationType: med.medicationType || '',
     });
     setFormErrors({});
     setModalOpen(true);
@@ -125,6 +140,7 @@ const Prescriptions = () => {
       price: Number(form.price),
       stockQuantity: form.stockQuantity ? Number(form.stockQuantity) : 0,
       isActive: form.isActive,
+      medicationType: form.medicationType || null,
     };
 
     try {
@@ -247,6 +263,7 @@ const Prescriptions = () => {
             <thead>
               <tr>
                 <th>Mã thuốc</th>
+                <th>Ảnh</th>
                 <th>Tên thuốc</th>
                 <th>Danh mục</th>
                 <th>Đơn vị</th>
@@ -258,27 +275,38 @@ const Prescriptions = () => {
             </thead>
             <tbody>
               {loading ? (
-                <tr><td colSpan={8} style={{ textAlign: 'center', padding: 40, color: 'var(--text-tertiary)' }}>Đang tải...</td></tr>
+                <tr><td colSpan={9} style={{ textAlign: 'center', padding: 40, color: 'var(--text-tertiary)' }}>Đang tải...</td></tr>
               ) : medications.length === 0 ? (
-                <tr><td colSpan={8} style={{ textAlign: 'center', padding: 40, color: 'var(--text-tertiary)' }}>Chưa có thuốc nào</td></tr>
+                <tr><td colSpan={9} style={{ textAlign: 'center', padding: 40, color: 'var(--text-tertiary)' }}>Chưa có thuốc nào</td></tr>
               ) : medications.map((med) => (
                 <tr key={med.medicationId}>
                   <td className={styles.fw500}>{med.medCode}</td>
+                  <td>
+                    {med.imageUrl ? (
+                      <img src={med.imageUrl.startsWith('http') ? med.imageUrl : `http://localhost:8080/uploads/${med.imageUrl.replace(/^\/uploads\//, '')}`} alt={med.medName} className={styles.medThumb} />
+                    ) : <span className={styles.noImg}>--</span>}
+                  </td>
                   <td>
                     <div className={styles.medInfo}>
                       <span className={styles.medName}>{med.medName}</span>
                       {med.activeIngredient && <span className={styles.medCode}>Hoạt chất: {med.activeIngredient}</span>}
                     </div>
                   </td>
-                  <td>{med.categoryName || <span style={{ color: 'var(--text-tertiary)' }}>--</span>}</td>
+                  <td>
+                    {med.medicationType
+                      ? <span className={`${styles.badge} ${med.medicationType === 'ORAL' ? styles.badgeOral : styles.badgeTopical}`}>
+                          {typeLabels[med.medicationType] || med.medicationType}
+                        </span>
+                      : <span style={{ color: 'var(--text-tertiary)' }}>--</span>}
+                  </td>
                   <td>{med.unit || '--'}</td>
                   <td className={styles.price}>{Number(med.price).toLocaleString('vi-VN')}₫</td>
                   <td className={med.stockQuantity != null && med.stockQuantity <= 10 ? styles.stockLow : styles.stockOk}>
                     {med.stockQuantity ?? 0}
                   </td>
                   <td>
-                    <span className={`${styles.badge} ${med.isActive ? '' : styles.badgeInactive}`}>
-                      {med.isActive ? 'Hoạt động' : 'Ngừng'}
+                    <span className={`${styles.badge} ${med.stockQuantity > 0 ? styles.badgeInStock : styles.badgeOutOfStock}`}>
+                      {med.stockQuantity > 0 ? 'Còn hàng' : 'Hết hàng'}
                     </span>
                   </td>
                   <td>
@@ -426,13 +454,16 @@ const Prescriptions = () => {
                     </select>
                   </div>
                   <div className={styles.formGroup}>
-                    <label className={styles.formLabel}>Dạng bào chế</label>
-                    <input
-                      className={styles.formInput}
-                      placeholder="VD: Viên nén"
-                      value={form.dosageForm}
-                      onChange={(e) => setForm({ ...form, dosageForm: e.target.value })}
-                    />
+                    <label className={styles.formLabel}>Loại thuốc</label>
+                    <select
+                      className={styles.formSelect}
+                      value={form.medicationType}
+                      onChange={(e) => setForm({ ...form, medicationType: e.target.value })}
+                    >
+                      {TYPE_OPTIONS.map((opt) => (
+                        <option key={opt.value} value={opt.value}>{opt.label}</option>
+                      ))}
+                    </select>
                   </div>
                 </div>
 
