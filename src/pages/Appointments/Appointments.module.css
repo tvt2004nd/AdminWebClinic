@@ -9,6 +9,9 @@
 .searchInput { width: 100%; padding: 10px 16px 10px 40px; border: 1px solid var(--border-color); border-radius: var(--radius-md); background-color: var(--bg-color); font-family: inherit; font-size: 0.875rem; transition: all var(--transition-fast); }
 .searchInput:focus { outline: none; border-color: var(--primary-color); background-color: var(--surface-color); box-shadow: 0 0 0 3px var(--primary-light); }
 .filters { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+.toolbarActions { display:flex; align-items:center; gap:12px; }
+.addBtn { padding: 8px 12px; background-color: var(--primary-color); color: #fff; border-radius: var(--radius-md); border: none; cursor: pointer; font-weight: 600; }
+.addBtn:hover { background-color: var(--primary-hover); }
 .filterItem { display: flex; align-items: center; gap: 6px; border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 6px 12px; background-color: var(--surface-color); }
 .filterIcon { color: var(--text-tertiary); flex-shrink: 0; }
 .filterDate { border: none; outline: none; font-family: inherit; font-size: 0.8125rem; color: var(--text-primary); background: transparent; }

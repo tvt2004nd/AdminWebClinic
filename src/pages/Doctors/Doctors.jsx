@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import { Plus, Search, Edit2, Trash2, X } from 'lucide-react';
+import { Plus, Search, Edit2, Trash2, X, CalendarDays } from 'lucide-react';
 import { fetchWithAuth } from '../../api';
 import styles from './Doctors.module.css';
 
@@ -26,6 +26,15 @@ const Doctors = () => {
   const [editing, setEditing] = useState(null);
   const [form, setForm] = useState({ ...emptyForm });
   const [saving, setSaving] = useState(false);
+  const [scheduleModalOpen, setScheduleModalOpen] = useState(false);
+  const [scheduleSaving, setScheduleSaving] = useState(false);
+  const [selectedDoctor, setSelectedDoctor] = useState(null);
+  const [scheduleForm, setScheduleForm] = useState({
+    workDate: '',
+    shiftStart: '',
+    shiftEnd: '',
+    status: 'AVAILABLE',
+  });
   const [deleteTarget, setDeleteTarget] = useState(null);
   const [toast, setToast] = useState(null);
 
@@ -136,6 +145,55 @@ const Doctors = () => {
     } catch { showToast('Không thể xóa', 'error'); }
   };
 
+  const openScheduleModal = (doctor) => {
+    setSelectedDoctor(doctor);
+    setScheduleForm({
+      workDate: '',
+      shiftStart: '',
+      shiftEnd: '',
+      status: 'AVAILABLE',
+    });
+    setScheduleModalOpen(true);
+  };
+
+  const closeScheduleModal = () => {
+    setSelectedDoctor(null);
+    setScheduleModalOpen(false);
+  };
+
+  const handleScheduleSubmit = async (e) => {
+    e.preventDefault();
+    if (!selectedDoctor) return;
+    if (!scheduleForm.workDate || !scheduleForm.shiftStart || !scheduleForm.shiftEnd) {
+      showToast('Vui lòng điền đầy đủ ngày và giờ', 'error');
+      return;
+    }
+    setScheduleSaving(true);
+    try {
+      const res = await fetchWithAuth('/api/admin/doctor-schedules', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          doctorId: selectedDoctor.doctorId,
+          workDate: scheduleForm.workDate,
+          shiftStart: scheduleForm.shiftStart,
+          shiftEnd: scheduleForm.shiftEnd,
+          status: scheduleForm.status,
+        }),
+      });
+      if (!res.ok) {
+        const data = await res.json().catch(() => null);
+        throw new Error(data?.message || 'Có lỗi khi tạo lịch khám');
+      }
+      showToast('Tạo lịch khám thành công', 'success');
+      closeScheduleModal();
+    } catch (error) {
+      showToast(error.message || 'Có lỗi xảy ra', 'error');
+    } finally {
+      setScheduleSaving(false);
+    }
+  };
+
   return (
     <div className={styles.page}>
       {toast && <div className={`${styles.toast} ${toast.type === 'success' ? styles.toastSuccess : styles.toastError}`}>{toast.message}</div>}
@@ -191,6 +249,7 @@ const Doctors = () => {
                   <td><span className={`${styles.statusDot} ${d.isActive ? styles.active : styles.inactive}`} />{d.isActive ? 'Hoạt động' : 'Vô hiệu'}</td>
                   <td>
                     <div className={styles.actions}>
+                      <button className={styles.iconBtn} title="Lịch khám" onClick={() => openScheduleModal(d)}><CalendarDays size={16} /></button>
                       <button className={styles.iconBtn} title="Sửa" onClick={() => openEdit(d)}><Edit2 size={16} /></button>
                       <button className={`${styles.iconBtn} ${styles.dangerBtn}`} title="Xóa" onClick={() => setDeleteTarget(d)}><Trash2 size={16} /></button>
                     </div>
@@ -268,6 +327,46 @@ const Doctors = () => {
               <div className={styles.modalFooter}>
                 <button type="button" className={styles.cancelBtn} onClick={() => setModalOpen(false)}>Hủy</button>
                 <button type="submit" className={styles.submitBtn} disabled={saving}>{saving ? 'Đang xử lý...' : editing ? 'Cập nhật' : 'Thêm mới'}</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {scheduleModalOpen && selectedDoctor && (
+        <div className={styles.overlay} onClick={closeScheduleModal}>
+          <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
+            <div className={styles.modalHeader}>
+              <h2 className={styles.modalTitle}>Tạo lịch khám cho {selectedDoctor.fullName}</h2>
+              <button className={styles.closeBtn} onClick={closeScheduleModal}><X size={20} /></button>
+            </div>
+            <form onSubmit={handleScheduleSubmit}>
+              <div className={styles.modalBody}>
+                <div className={styles.formRow}>
+                  <div className={styles.formGroup}>
+                    <label className={styles.formLabel}>Ngày khám</label>
+                    <input className={styles.formInput} type="date" value={scheduleForm.workDate} onChange={(e) => setScheduleForm({ ...scheduleForm, workDate: e.target.value })} />
+                  </div>
+                  <div className={styles.formGroup}>
+                    <label className={styles.formLabel}>Giờ bắt đầu</label>
+                    <input className={styles.formInput} type="time" value={scheduleForm.shiftStart} onChange={(e) => setScheduleForm({ ...scheduleForm, shiftStart: e.target.value })} />
+                  </div>
+                </div>
+                <div className={styles.formGroup}>
+                  <label className={styles.formLabel}>Giờ kết thúc</label>
+                  <input className={styles.formInput} type="time" value={scheduleForm.shiftEnd} onChange={(e) => setScheduleForm({ ...scheduleForm, shiftEnd: e.target.value })} />
+                </div>
+                <div className={styles.formGroup}>
+                  <label className={styles.formLabel}>Trạng thái</label>
+                  <select className={styles.formSelect} value={scheduleForm.status} onChange={(e) => setScheduleForm({ ...scheduleForm, status: e.target.value })}>
+                    <option value="AVAILABLE">Còn lịch</option>
+                    <option value="FULL">Đã có người đặt</option>
+                  </select>
+                </div>
+              </div>
+              <div className={styles.modalFooter}>
+                <button type="button" className={styles.cancelBtn} onClick={closeScheduleModal}>Hủy</button>
+                <button type="submit" className={styles.submitBtn} disabled={scheduleSaving}>{scheduleSaving ? 'Đang tạo...' : 'Tạo lịch khám'}</button>
               </div>
             </form>
           </div>

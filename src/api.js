@@ -17,7 +17,9 @@ export async function fetchWithAuth(url, options = {}) {
     headers['Authorization'] = `Bearer ${token}`;
   }
   const res = await fetch(`${API_HOST}${url}`, { ...options, headers });
-  if (res.status === 401 || res.status === 403) {
+  // If the token is invalid/expired, backend returns 401 -> sign out.
+  // If the user is forbidden (403), do not auto-logout; let callers handle it.
+  if (res.status === 401) {
     localStorage.removeItem('auth');
     localStorage.removeItem('isAuthenticated');
     window.location.href = '/login';
