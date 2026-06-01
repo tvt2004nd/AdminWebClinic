@@ -9,15 +9,29 @@ const Login = () => {
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
     setIsLoading(true);
-    // Giả lập gọi API đăng nhập
-    setTimeout(() => {
-      setIsLoading(false);
+    try {
+      const res = await fetch('http://localhost:8080/api/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username: email, password }),
+      });
+      if (!res.ok) {
+        const err = await res.text();
+        alert(err || 'Đăng nhập thất bại');
+        return;
+      }
+      const data = await res.json();
+      localStorage.setItem('auth', JSON.stringify({ token: data.token, roles: data.roles }));
       localStorage.setItem('isAuthenticated', 'true');
       navigate('/dashboard');
-    }, 1000);
+    } catch {
+      alert('Không thể kết nối máy chủ');
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (

@@ -2,7 +2,7 @@
 .header { display: flex; justify-content: space-between; align-items: flex-end; }
 .title { font-size: 1.5rem; font-weight: 700; color: var(--text-primary); margin-bottom: 4px; }
 .subtitle { color: var(--text-secondary); font-size: 0.875rem; }
-.primaryBtn { display: flex; align-items: center; gap: 8px; background-color: var(--primary-color); color: white; padding: 10px 20px; border-radius: var(--radius-md); font-weight: 500; cursor: pointer; border: none; transition: background-color var(--transition-fast); }
+.primaryBtn { display: flex; align-items: center; gap: 8px; background-color: var(--primary-color); color: white; padding: 10px 20px; border-radius: var(--radius-md); font-weight: 500; transition: background-color var(--transition-fast); }
 .primaryBtn:hover { background-color: var(--primary-hover); }
 .card { background-color: var(--surface-color); border-radius: var(--radius-lg); box-shadow: var(--shadow-sm); border: 1px solid var(--border-color); overflow: hidden; }
 .toolbar { padding: 20px 24px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color); gap: 16px; flex-wrap: wrap; }
@@ -10,32 +10,30 @@
 .searchIcon { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--text-tertiary); }
 .searchInput { width: 100%; padding: 10px 16px 10px 40px; border: 1px solid var(--border-color); border-radius: var(--radius-md); background-color: var(--bg-color); font-family: inherit; font-size: 0.875rem; transition: all var(--transition-fast); }
 .searchInput:focus { outline: none; border-color: var(--primary-color); background-color: var(--surface-color); box-shadow: 0 0 0 3px var(--primary-light); }
-.filters { display: flex; align-items: center; gap: 12px; }
-.totalCount { font-size: 0.8125rem; color: var(--text-secondary); white-space: nowrap; }
-.select { padding: 10px 16px; border: 1px solid var(--border-color); border-radius: var(--radius-md); background-color: var(--surface-color); font-family: inherit; font-size: 0.875rem; color: var(--text-primary); outline: none; cursor: pointer; }
-.select:focus { border-color: var(--primary-color); box-shadow: 0 0 0 3px var(--primary-light); }
 .tableContainer { width: 100%; overflow-x: auto; }
 .table { width: 100%; border-collapse: collapse; text-align: left; }
 .table th { background-color: var(--bg-color); color: var(--text-secondary); font-weight: 600; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; padding: 16px 24px; border-bottom: 1px solid var(--border-color); }
 .table td { padding: 16px 24px; border-bottom: 1px solid var(--border-color); font-size: 0.875rem; color: var(--text-primary); vertical-align: middle; }
 .table tbody tr:hover { background-color: var(--surface-hover); }
 .fw500 { font-weight: 500; }
-.doctorInfo { display: flex; align-items: center; gap: 12px; font-weight: 500; }
-.avatar { width: 32px; height: 32px; background-color: var(--primary-light); color: var(--primary-hover); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 600; }
+.roleBadge { display: inline-block; padding: 4px 12px; background-color: #eef2ff; color: #4338ca; border-radius: var(--radius-full); font-size: 0.75rem; font-weight: 500; }
 .badge { display: inline-block; padding: 4px 12px; background-color: #f0fdf4; color: #15803d; border-radius: var(--radius-full); font-size: 0.75rem; font-weight: 500; }
-.star { color: #f59e0b; }
-.statusDot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 6px; vertical-align: middle; }
-.active { background-color: #22c55e; }
-.inactive { background-color: #ef4444; }
+.badgeInactive { background-color: #fef2f2; color: #dc2626; }
 .actions { display: flex; align-items: center; gap: 8px; }
-.iconBtn { width: 32px; height: 32px; border-radius: var(--radius-md); display: flex; align-items: center; justify-content: center; color: var(--text-secondary); cursor: pointer; transition: all var(--transition-fast); border: none; background: none; }
+.iconBtn { width: 32px; height: 32px; border-radius: var(--radius-md); display: flex; align-items: center; justify-content: center; color: var(--text-secondary); transition: all var(--transition-fast); }
 .iconBtn:hover { background-color: var(--border-color); color: var(--text-primary); }
 .dangerBtn:hover { background-color: #fef2f2; color: var(--danger); }
+.paginationBar { display: flex; justify-content: space-between; align-items: center; padding: 12px 16px; font-size: 0.875rem; color: var(--text-secondary); }
+.pageControls { display: flex; gap: 4px; align-items: center; }
+.pageBtn { padding: 6px 12px; border: 1px solid var(--border-color); border-radius: 6px; background: var(--bg-primary); color: var(--text-primary); cursor: pointer; font-size: 0.8125rem; }
+.pageBtn:disabled { opacity: 0.5; cursor: not-allowed; background: var(--bg-secondary); color: var(--text-tertiary); }
+.activePage { background-color: var(--primary-color); color: #fff; border-color: var(--primary-color); font-weight: 600; }
+.ellipsis { padding: 0 4px; color: var(--text-tertiary); }
 .overlay { position: fixed; inset: 0; background-color: rgba(15, 23, 42, 0.5); display: flex; align-items: center; justify-content: center; z-index: 100; padding: 20px; }
 .modal { background-color: var(--surface-color); border-radius: var(--radius-xl); width: 100%; max-width: 560px; max-height: 90vh; overflow-y: auto; box-shadow: var(--shadow-lg); }
 .modalHeader { display: flex; justify-content: space-between; align-items: center; padding: 20px 24px; border-bottom: 1px solid var(--border-color); }
 .modalTitle { font-size: 1.125rem; font-weight: 600; color: var(--text-primary); }
-.closeBtn { width: 32px; height: 32px; border-radius: var(--radius-md); display: flex; align-items: center; justify-content: center; color: var(--text-tertiary); cursor: pointer; border: none; background: none; transition: all var(--transition-fast); }
+.closeBtn { width: 32px; height: 32px; border-radius: var(--radius-md); display: flex; align-items: center; justify-content: center; color: var(--text-tertiary); transition: all var(--transition-fast); }
 .closeBtn:hover { background-color: var(--border-color); color: var(--text-primary); }
 .modalBody { padding: 24px; display: flex; flex-direction: column; gap: 16px; }
 .formRow { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
@@ -45,12 +43,13 @@
 .formInput:focus { outline: none; border-color: var(--primary-color); box-shadow: 0 0 0 3px var(--primary-light); background-color: var(--surface-color); }
 .formSelect { padding: 10px 14px; border: 1px solid var(--border-color); border-radius: var(--radius-md); font-family: inherit; font-size: 0.875rem; background-color: var(--surface-color); cursor: pointer; }
 .formSelect:focus { outline: none; border-color: var(--primary-color); box-shadow: 0 0 0 3px var(--primary-light); }
-.formTextarea { padding: 10px 14px; border: 1px solid var(--border-color); border-radius: var(--radius-md); font-family: inherit; font-size: 0.875rem; background-color: var(--bg-color); resize: vertical; transition: all var(--transition-fast); }
-.formTextarea:focus { outline: none; border-color: var(--primary-color); box-shadow: 0 0 0 3px var(--primary-light); background-color: var(--surface-color); }
+.checkboxGroup { display: flex; align-items: center; gap: 8px; }
+.checkboxGroup input[type="checkbox"] { width: 18px; height: 18px; cursor: pointer; }
+.checkboxGroup label { font-size: 0.875rem; cursor: pointer; }
 .modalFooter { display: flex; justify-content: flex-end; gap: 12px; padding: 16px 24px; border-top: 1px solid var(--border-color); }
 .cancelBtn { padding: 10px 20px; border: 1px solid var(--border-color); background-color: var(--surface-color); border-radius: var(--radius-md); font-size: 0.875rem; font-weight: 500; color: var(--text-primary); cursor: pointer; }
 .cancelBtn:hover { background-color: var(--surface-hover); }
-.submitBtn { padding: 10px 24px; background-color: var(--primary-color); color: white; border-radius: var(--radius-md); font-size: 0.875rem; font-weight: 500; cursor: pointer; border: none; }
+.submitBtn { padding: 10px 24px; background-color: var(--primary-color); color: white; border-radius: var(--radius-md); font-size: 0.875rem; font-weight: 500; cursor: pointer; }
 .submitBtn:hover { background-color: var(--primary-hover); }
 .submitBtn:disabled { opacity: 0.6; cursor: not-allowed; }
 .confirmOverlay { position: fixed; inset: 0; background-color: rgba(15, 23, 42, 0.5); display: flex; align-items: center; justify-content: center; z-index: 110; padding: 20px; }
@@ -59,7 +58,7 @@
 .confirmTitle { font-size: 1.125rem; font-weight: 600; color: var(--text-primary); margin-bottom: 8px; }
 .confirmText { font-size: 0.875rem; color: var(--text-secondary); margin-bottom: 24px; }
 .confirmActions { display: flex; gap: 12px; justify-content: center; }
-.deleteBtn { padding: 10px 24px; background-color: var(--danger); color: white; border-radius: var(--radius-md); font-size: 0.875rem; font-weight: 500; cursor: pointer; border: none; }
+.deleteBtn { padding: 10px 24px; background-color: var(--danger); color: white; border-radius: var(--radius-md); font-size: 0.875rem; font-weight: 500; cursor: pointer; }
 .deleteBtn:hover { background-color: #dc2626; }
 .toast { position: fixed; top: 24px; right: 24px; padding: 12px 20px; border-radius: var(--radius-md); font-size: 0.875rem; font-weight: 500; z-index: 200; box-shadow: var(--shadow-lg); animation: slideIn 0.3s ease; }
 .toastSuccess { background-color: #ecfdf5; color: #065f46; border: 1px solid #a7f3d0; }

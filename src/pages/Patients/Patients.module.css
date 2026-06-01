@@ -2,7 +2,7 @@
 .header { display: flex; justify-content: space-between; align-items: flex-end; }
 .title { font-size: 1.5rem; font-weight: 700; color: var(--text-primary); margin-bottom: 4px; }
 .subtitle { color: var(--text-secondary); font-size: 0.875rem; }
-.primaryBtn { display: flex; align-items: center; gap: 8px; background-color: var(--primary-color); color: white; padding: 10px 20px; border-radius: var(--radius-md); font-weight: 500; cursor: pointer; border: none; transition: background-color var(--transition-fast); }
+.primaryBtn { display: flex; align-items: center; gap: 8px; background-color: var(--primary-color); color: white; padding: 10px 20px; border-radius: var(--radius-md); font-weight: 500; cursor: pointer; transition: background-color var(--transition-fast); }
 .primaryBtn:hover { background-color: var(--primary-hover); }
 .card { background-color: var(--surface-color); border-radius: var(--radius-lg); box-shadow: var(--shadow-sm); border: 1px solid var(--border-color); overflow: hidden; }
 .toolbar { padding: 20px 24px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color); gap: 16px; flex-wrap: wrap; }
@@ -10,23 +10,14 @@
 .searchIcon { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); color: var(--text-tertiary); }
 .searchInput { width: 100%; padding: 10px 16px 10px 40px; border: 1px solid var(--border-color); border-radius: var(--radius-md); background-color: var(--bg-color); font-family: inherit; font-size: 0.875rem; transition: all var(--transition-fast); }
 .searchInput:focus { outline: none; border-color: var(--primary-color); background-color: var(--surface-color); box-shadow: 0 0 0 3px var(--primary-light); }
-.filters { display: flex; align-items: center; gap: 12px; }
-.totalCount { font-size: 0.8125rem; color: var(--text-secondary); white-space: nowrap; }
-.select { padding: 10px 16px; border: 1px solid var(--border-color); border-radius: var(--radius-md); background-color: var(--surface-color); font-family: inherit; font-size: 0.875rem; color: var(--text-primary); outline: none; cursor: pointer; }
-.select:focus { border-color: var(--primary-color); box-shadow: 0 0 0 3px var(--primary-light); }
+.totalCount { font-size: 0.875rem; color: var(--text-secondary); white-space: nowrap; }
 .tableContainer { width: 100%; overflow-x: auto; }
 .table { width: 100%; border-collapse: collapse; text-align: left; }
 .table th { background-color: var(--bg-color); color: var(--text-secondary); font-weight: 600; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; padding: 16px 24px; border-bottom: 1px solid var(--border-color); }
 .table td { padding: 16px 24px; border-bottom: 1px solid var(--border-color); font-size: 0.875rem; color: var(--text-primary); vertical-align: middle; }
 .table tbody tr:hover { background-color: var(--surface-hover); }
 .fw500 { font-weight: 500; }
-.doctorInfo { display: flex; align-items: center; gap: 12px; font-weight: 500; }
-.avatar { width: 32px; height: 32px; background-color: var(--primary-light); color: var(--primary-hover); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 600; }
-.badge { display: inline-block; padding: 4px 12px; background-color: #f0fdf4; color: #15803d; border-radius: var(--radius-full); font-size: 0.75rem; font-weight: 500; }
-.star { color: #f59e0b; }
-.statusDot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 6px; vertical-align: middle; }
-.active { background-color: #22c55e; }
-.inactive { background-color: #ef4444; }
+.bloodBadge { display: inline-block; padding: 4px 12px; background-color: #fdf2f8; color: #be185d; border-radius: var(--radius-full); font-size: 0.75rem; font-weight: 600; }
 .actions { display: flex; align-items: center; gap: 8px; }
 .iconBtn { width: 32px; height: 32px; border-radius: var(--radius-md); display: flex; align-items: center; justify-content: center; color: var(--text-secondary); cursor: pointer; transition: all var(--transition-fast); border: none; background: none; }
 .iconBtn:hover { background-color: var(--border-color); color: var(--text-primary); }
@@ -35,7 +26,7 @@
 .modal { background-color: var(--surface-color); border-radius: var(--radius-xl); width: 100%; max-width: 560px; max-height: 90vh; overflow-y: auto; box-shadow: var(--shadow-lg); }
 .modalHeader { display: flex; justify-content: space-between; align-items: center; padding: 20px 24px; border-bottom: 1px solid var(--border-color); }
 .modalTitle { font-size: 1.125rem; font-weight: 600; color: var(--text-primary); }
-.closeBtn { width: 32px; height: 32px; border-radius: var(--radius-md); display: flex; align-items: center; justify-content: center; color: var(--text-tertiary); cursor: pointer; border: none; background: none; transition: all var(--transition-fast); }
+.closeBtn { width: 32px; height: 32px; border-radius: var(--radius-md); display: flex; align-items: center; justify-content: center; color: var(--text-tertiary); cursor: pointer; transition: all var(--transition-fast); border: none; background: none; }
 .closeBtn:hover { background-color: var(--border-color); color: var(--text-primary); }
 .modalBody { padding: 24px; display: flex; flex-direction: column; gap: 16px; }
 .formRow { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
@@ -53,6 +44,14 @@
 .submitBtn { padding: 10px 24px; background-color: var(--primary-color); color: white; border-radius: var(--radius-md); font-size: 0.875rem; font-weight: 500; cursor: pointer; border: none; }
 .submitBtn:hover { background-color: var(--primary-hover); }
 .submitBtn:disabled { opacity: 0.6; cursor: not-allowed; }
+.detailBody { padding: 24px; }
+.detailGrid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.detailItem { display: flex; flex-direction: column; gap: 4px; }
+.detailLabel { font-size: 0.75rem; color: var(--text-tertiary); text-transform: uppercase; letter-spacing: 0.03em; font-weight: 600; }
+.detailValue { font-size: 0.875rem; color: var(--text-primary); font-weight: 500; }
+.medicalHistorySection { margin-top: 24px; padding-top: 20px; border-top: 1px solid var(--border-color); }
+.sectionTitle { font-size: 0.875rem; font-weight: 600; color: var(--text-primary); margin-bottom: 8px; }
+.medicalHistoryText { font-size: 0.875rem; color: var(--text-secondary); line-height: 1.6; white-space: pre-wrap; }
 .confirmOverlay { position: fixed; inset: 0; background-color: rgba(15, 23, 42, 0.5); display: flex; align-items: center; justify-content: center; z-index: 110; padding: 20px; }
 .confirmModal { background-color: var(--surface-color); border-radius: var(--radius-lg); padding: 24px; width: 100%; max-width: 400px; text-align: center; box-shadow: var(--shadow-lg); }
 .confirmIcon { margin: 0 auto 16px; width: 48px; height: 48px; background-color: #fef2f2; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--danger); }
