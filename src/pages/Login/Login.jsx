@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Stethoscope, Lock, Mail } from 'lucide-react';
 import styles from './Login.module.css';
+import api, { setAuthToken } from '../../services/api';
 
 const Login = () => {
   const navigate = useNavigate();
@@ -12,6 +13,23 @@ const Login = () => {
   const handleLogin = async (e) => {
     e.preventDefault();
     setIsLoading(true);
+
+    api.post('/api/auth/login', { username: email, password })
+      .then((res) => {
+        setIsLoading(false);
+        const token = res.data.token || res.data.accessToken || res.data.jwt;
+        if (token) {
+          setAuthToken(token);
+        }
+        // mark auth for legacy checks in the app
+        localStorage.setItem('isAuthenticated', 'true');
+        navigate('/dashboard');
+      })
+      .catch((err) => {
+        setIsLoading(false);
+        alert(err?.response?.data?.message || 'Đăng nhập thất bại');
+      });
+
     try {
       const res = await fetch('http://localhost:8080/api/auth/login', {
         method: 'POST',
@@ -32,6 +50,7 @@ const Login = () => {
     } finally {
       setIsLoading(false);
     }
+
   };
 
   return (

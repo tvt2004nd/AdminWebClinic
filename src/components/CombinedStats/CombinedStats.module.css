@@ -1,0 +1,38 @@
+:root {
+  --gap: 12px;
+}
+
+.cardCombined {
+  background: var(--surface-color);
+  border-radius: 12px;
+  padding: 18px;
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--border-color);
+}
+
+.headerRow { display:flex; justify-content:space-between; align-items:center; margin-bottom:8px }
+.title { font-size:1.125rem; font-weight:600; color:var(--text-primary) }
+
+.legendRow {
+  display:flex;
+  flex-wrap:wrap;
+  gap:10px;
+  margin-bottom:12px;
+}
+
+.legendItem { display:flex; align-items:center; gap:8px; padding:4px 6px; background:var(--surface-variant); border-radius:8px }
+.legendDot { width:12px; height:12px; border-radius:50%; display:inline-block }
+.legendText { font-size:0.875rem; color:var(--text-secondary) }
+
+.chartsRow { display:flex; gap:16px }
+.pieCol { width:40%; height:300px }
+.barCol { flex:1; height:300px }
+
+.loading { padding:36px; color:var(--text-secondary); text-align:center }
+.totals { font-size:0.9rem; color:var(--text-secondary) }
+
+@media (max-width: 900px) {
+  .chartsRow { flex-direction:column }
+  .pieCol { width:100%; height:220px }
+  .barCol { height:220px }
+}
