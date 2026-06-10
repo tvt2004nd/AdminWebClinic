@@ -1,15 +1,16 @@
 import { NavLink, useNavigate } from 'react-router-dom';
-import { 
-  LayoutDashboard, 
-  Users, 
-  Stethoscope, 
-  UserSquare2, 
-  CalendarCheck, 
+import {
+  LayoutDashboard,
+  Users,
+  Stethoscope,
+  UserSquare2,
+  CalendarCheck,
   FileText,
   Pill,
   CreditCard,
   LogOut,
-  X
+  X,
+  DoorOpen
 } from 'lucide-react';
 import styles from './Sidebar.module.css';
 
@@ -17,6 +18,7 @@ const menuItems = [
   { path: '/dashboard', name: 'Tổng quan', icon: LayoutDashboard },
   { path: '/users', name: 'Tài khoản', icon: Users },
   { path: '/doctors', name: 'Bác sĩ', icon: Stethoscope },
+  { path: '/rooms', name: 'Phòng khám', icon: DoorOpen },
   { path: '/patients', name: 'Bệnh nhân', icon: UserSquare2 },
   { path: '/appointments', name: 'Lịch hẹn', icon: CalendarCheck },
   { path: '/records', name: 'Bệnh án', icon: FileText },
@@ -28,6 +30,7 @@ const Sidebar = ({ isOpen, closeSidebar }) => {
   const navigate = useNavigate();
 
   const handleLogout = () => {
+    localStorage.removeItem('auth');
     localStorage.removeItem('isAuthenticated');
     navigate('/login');
   };
@@ -52,8 +55,8 @@ const Sidebar = ({ isOpen, closeSidebar }) => {
             const Icon = item.icon;
             return (
               <li key={item.path}>
-                <NavLink 
-                  to={item.path} 
+                <NavLink
+                  to={item.path}
                   className={({ isActive }) => isActive ? `${styles.navLink} ${styles.active}` : styles.navLink}
                   onClick={closeSidebar}
                 >

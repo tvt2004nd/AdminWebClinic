@@ -1,0 +1,22 @@
+.page {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.header {
+    padding: 12px 16px;
+}
+
+.title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.card {
+    background: var(--surface-color);
+    padding: 12px;
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--border-color);
+}

@@ -10,9 +10,10 @@ const Login = () => {
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
     setIsLoading(true);
+
     api.post('/api/auth/login', { username: email, password })
       .then((res) => {
         setIsLoading(false);
@@ -28,6 +29,28 @@ const Login = () => {
         setIsLoading(false);
         alert(err?.response?.data?.message || 'Đăng nhập thất bại');
       });
+
+    try {
+      const res = await fetch('http://localhost:8080/api/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username: email, password }),
+      });
+      if (!res.ok) {
+        const err = await res.text();
+        alert(err || 'Đăng nhập thất bại');
+        return;
+      }
+      const data = await res.json();
+      localStorage.setItem('auth', JSON.stringify({ token: data.token, roles: data.roles }));
+      localStorage.setItem('isAuthenticated', 'true');
+      navigate('/dashboard');
+    } catch {
+      alert('Không thể kết nối máy chủ');
+    } finally {
+      setIsLoading(false);
+    }
+
   };
 
   return (
