@@ -28,6 +28,57 @@
   gap: 24px;
 }
 
+.satisfactionSection {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+}
+
+.satisfactionCard {
+  background-color: var(--surface-color);
+  border-radius: var(--radius-lg);
+  padding: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--border-color);
+}
+
+.satisfactionPercent {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 8px 0 4px 0;
+}
+
+.smallText {
+  font-size: 0.8125rem;
+  color: var(--text-secondary);
+}
+
+.diseaseList {
+  list-style: none;
+  padding: 0;
+  margin: 8px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.diseaseItem {
+  font-size: 0.95rem;
+  color: var(--text-primary);
+}
+
+.cancelLink {
+  display: inline-block;
+  margin-top: 8px;
+  font-size: 0.875rem;
+  color: var(--link-color);
+  text-decoration: underline;
+}
+
 .statCard {
   background-color: var(--surface-color);
   border-radius: var(--radius-lg);
@@ -102,19 +153,16 @@
   color: #10b981;
 }
 
-.contentGrid {
-  display: grid;
-  grid-template-columns: 2fr 1fr;
-  gap: 24px;
+.contentGridSingle {
+  display: block;
 }
 
-.card {
+.cardFull {
   background-color: var(--surface-color);
   border-radius: var(--radius-lg);
-  padding: 24px;
+  padding: 18px;
   box-shadow: var(--shadow-sm);
   border: 1px solid var(--border-color);
-  min-height: 300px;
 }
 
 .cardTitle {
@@ -136,6 +184,139 @@
 
 .emptyIcon {
   opacity: 0.5;
+}
+
+.patientTable {
+  width: 100%;
+  border-collapse: collapse;
+  color: var(--text-primary);
+}
+
+.patientTable th {
+  text-align: left;
+  padding: 10px 8px;
+  background: var(--surface-variant, #f3f4f6);
+  font-weight: 600;
+}
+
+.patientTable td {
+  padding: 10px 8px;
+  border-top: 1px solid var(--border-color);
+}
+
+.patientTable .num {
+  text-align: right;
+  color: var(--text-secondary);
+}
+
+.satisfactionOverview {
+  display: flex;
+  gap: 18px;
+  align-items: flex-start;
+}
+
+.donutWrap {
+  width: 160px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.donut {
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  background: conic-gradient(#06b6d4 0 42%, #34d399 42% 80%, #cbd5e1 80% 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: var(--shadow-sm);
+}
+
+.donutInner {
+  width: 84px;
+  height: 84px;
+  border-radius: 50%;
+  background: var(--surface-color);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.donutPercent {
+  font-size: 1.375rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.donutLabel {
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+}
+
+.donutLegend {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+}
+
+.legendDot {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  margin-right: 8px;
+  vertical-align: middle;
+}
+
+.ratingGroups {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.ratingGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.ratingTitle {
+  font-weight: 600;
+  color: var(--text-primary);
+  font-size: 0.95rem;
+}
+
+.ratingBar {
+  position: relative;
+  background: var(--surface-variant, #f3f4f6);
+  height: 18px;
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.ratingFill {
+  height: 100%;
+  background: #60a5fa;
+}
+
+.ratingValue {
+  position: absolute;
+  right: 8px;
+  top: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  font-size: 0.875rem;
+  color: var(--text-primary);
 }
 
 @media (max-width: 1024px) {

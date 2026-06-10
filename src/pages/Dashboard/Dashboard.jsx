@@ -1,5 +1,9 @@
-import { Users, Stethoscope, CalendarCheck, TrendingUp } from 'lucide-react';
+import { Users, Stethoscope, CalendarCheck, TrendingUp, Smile, FileText, XCircle } from 'lucide-react';
 import styles from './Dashboard.module.css';
+import { useEffect, useState } from 'react';
+import api from '../../services/api';
+import RevenueChart from '../../components/RevenueChart/RevenueChart';
+import CombinedStats from '../../components/CombinedStats/CombinedStats';
 
 const StatCard = ({ title, value, trend, icon: Icon, colorClass }) => (
   <div className={styles.statCard}>
@@ -18,6 +22,16 @@ const StatCard = ({ title, value, trend, icon: Icon, colorClass }) => (
 );
 
 const Dashboard = () => {
+  const [stats, setStats] = useState({ doctors: 0, patients: 0, appointments: 0, medicalRecords: 0 });
+  const [revenue, setRevenue] = useState({ monthRevenue: 0, yearRevenue: 0, month: null, year: null });
+  const [monthlyRevenue, setMonthlyRevenue] = useState(null);
+
+  useEffect(() => {
+    api.get('/api/dashboard').then(res => setStats(res.data)).catch(() => {});
+    api.get('/api/stats/revenue').then(res => setRevenue(res.data)).catch(() => {});
+    api.get('/api/stats/revenue/monthly').then(res => setMonthlyRevenue(res.data)).catch(() => {});
+  }, []);
+
   return (
     <div className={styles.dashboard}>
       <div className={styles.header}>
@@ -30,49 +44,67 @@ const Dashboard = () => {
       <div className={styles.statsGrid}>
         <StatCard 
           title="Tổng Bệnh nhân" 
-          value="1,284" 
-          trend="+12% so với tháng trước" 
+          value={stats.patients.toLocaleString()}
+          trend=""
           icon={Users}
           colorClass={styles.iconBlue}
         />
         <StatCard 
-          title="Bác sĩ Hoạt động" 
-          value="24" 
-          trend="+2 trong tháng này" 
+          title="Bác sĩ" 
+          value={stats.doctors}
+          trend=""
           icon={Stethoscope}
           colorClass={styles.iconTeal}
         />
+        {/* Revenue chart is shown below */}
         <StatCard 
-          title="Lịch khám Hôm nay" 
-          value="86" 
-          trend="14 đang chờ" 
+          title="Lịch khám (tổng)" 
+          value={stats.appointments}
+          trend=""
           icon={CalendarCheck}
           colorClass={styles.iconWarning}
         />
         <StatCard 
-          title="Doanh thu Tháng" 
-          value="240.5M ₫" 
-          trend="+18% so với tháng trước" 
+          title="Hồ sơ y tế" 
+          value={stats.medicalRecords}
+          trend=""
           icon={TrendingUp}
           colorClass={styles.iconSuccess}
         />
       </div>
 
-      <div className={styles.contentGrid}>
-        <div className={styles.card}>
-          <h3 className={styles.cardTitle}>Lịch hẹn Gần đây</h3>
-          <div className={styles.emptyState}>
-            <CalendarCheck size={48} className={styles.emptyIcon} />
-            <p>Đang tải lịch hẹn gần đây...</p>
+      <div className={styles.satisfactionSection}>
+        <div className={styles.satisfactionCard}>
+          <div>
+            <h3 className={styles.cardTitle}>Tỉ lệ theo dõi bệnh</h3>
+            <ul className={styles.diseaseList}>
+              <li className={styles.diseaseItem}>Mụn trứng cá: <strong>78%</strong></li>
+              <li className={styles.diseaseItem}>Viêm da cơ địa: <strong>64%</strong></li>
+              <li className={styles.diseaseItem}>Nấm da: <strong>53%</strong></li>
+            </ul>
+            <p className={styles.smallText}>Tỉ lệ bệnh nhân quay lại / theo dõi sau khám, theo loại bệnh</p>
+          </div>
+          <div className={`${styles.statIcon} ${styles.iconTeal}`}>
+            <FileText size={28} />
           </div>
         </div>
-        
-        <div className={styles.card}>
-          <h3 className={styles.cardTitle}>Thống kê Chẩn đoán AI</h3>
-          <div className={styles.emptyState}>
-            <Stethoscope size={48} className={styles.emptyIcon} />
-            <p>Đang tải dữ liệu AI...</p>
+
+        <div className={styles.satisfactionCard}>
+          <div>
+            <h3 className={styles.cardTitle}>Tỉ lệ Huỷ lịch hẹn</h3>
+            <div className={styles.satisfactionPercent}>6%</div>
+            <p className={styles.smallText}>Tỉ lệ huỷ so với tổng lịch hẹn (xem chi tiết ở phần Lịch hẹn)</p>
+            <a href="/appointments" className={styles.cancelLink}>Xem Lịch hẹn</a>
           </div>
+          <div className={`${styles.statIcon} ${styles.iconWarning}`}>
+            <XCircle size={28} />
+          </div>
+        </div>
+      </div>
+
+      <div className={styles.contentGridSingle}>
+        <div className={styles.cardFull}>
+          <CombinedStats />
         </div>
       </div>
     </div>

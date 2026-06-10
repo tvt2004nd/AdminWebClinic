@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Stethoscope, Lock, Mail } from 'lucide-react';
 import styles from './Login.module.css';
+import api, { setAuthToken } from '../../services/api';
 
 const Login = () => {
   const navigate = useNavigate();
@@ -12,12 +13,21 @@ const Login = () => {
   const handleLogin = (e) => {
     e.preventDefault();
     setIsLoading(true);
-    // Giả lập gọi API đăng nhập
-    setTimeout(() => {
-      setIsLoading(false);
-      localStorage.setItem('isAuthenticated', 'true');
-      navigate('/dashboard');
-    }, 1000);
+    api.post('/api/auth/login', { username: email, password })
+      .then((res) => {
+        setIsLoading(false);
+        const token = res.data.token || res.data.accessToken || res.data.jwt;
+        if (token) {
+          setAuthToken(token);
+        }
+        // mark auth for legacy checks in the app
+        localStorage.setItem('isAuthenticated', 'true');
+        navigate('/dashboard');
+      })
+      .catch((err) => {
+        setIsLoading(false);
+        alert(err?.response?.data?.message || 'Đăng nhập thất bại');
+      });
   };
 
   return (
