@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { Search, Calendar, Edit2, Trash2, X } from 'lucide-react';
 import { fetchWithAuth } from '../../api';
+import Pagination from '../../components/Pagination/Pagination';
 import styles from './Appointments.module.css';
 
 // Simplified status set (backend-compatible): SCHEDULED = chưa khám, CONFIRMED = đã xác nhận, COMPLETED = đã khám
@@ -39,6 +40,8 @@ const Appointments = () => {
   const [saving, setSaving] = useState(false);
   const [deleteTarget, setDeleteTarget] = useState(null);
   const [toast, setToast] = useState(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const pageSize = 10;
 
   const showToast = (message, type) => {
     setToast({ message, type });
@@ -92,6 +95,13 @@ const Appointments = () => {
   };
 
   useEffect(() => { fetchAppointments(); fetchDoctors(); }, [fetchAppointments]);
+
+  useEffect(() => { setCurrentPage(1); }, [keyword, statusFilter, doctorFilter, dateFilter]);
+
+  const indexOfLastItem = currentPage * pageSize;
+  const indexOfFirstItem = indexOfLastItem - pageSize;
+  const currentAppointments = appointments.slice(indexOfFirstItem, indexOfLastItem);
+  const totalPages = Math.ceil(appointments.length / pageSize);
 
   const openEdit = (a) => {
     setEditing(a);
@@ -194,8 +204,8 @@ const Appointments = () => {
             </thead>
             <tbody>
               {loading ? <tr><td colSpan={8} style={{textAlign:'center',padding:40,color:'var(--text-tertiary)'}}>Đang tải...</td></tr>
-              : appointments.length === 0 ? <tr><td colSpan={8} style={{textAlign:'center',padding:40,color:'var(--text-tertiary)'}}>Không tìm thấy</td></tr>
-              : appointments.map(a => {
+              : currentAppointments.length === 0 ? <tr><td colSpan={8} style={{textAlign:'center',padding:40,color:'var(--text-tertiary)'}}>Không tìm thấy</td></tr>
+              : currentAppointments.map(a => {
                 const simple = simplifyStatus(a.status);
                 const sc = statusColors[simple] || { bg: '#f8fafc', color: '#64748b' };
                 const label = statusLabels[simple] || simple;
@@ -220,6 +230,13 @@ const Appointments = () => {
             </tbody>
           </table>
         </div>
+        {!loading && currentAppointments.length > 0 && (
+          <Pagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onPageChange={setCurrentPage}
+          />
+        )}
       </div>
 
       {modalOpen && (

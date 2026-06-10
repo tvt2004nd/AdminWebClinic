@@ -21,7 +21,6 @@ const menuItems = [
   { path: '/rooms', name: 'Phòng khám', icon: DoorOpen },
   { path: '/patients', name: 'Bệnh nhân', icon: UserSquare2 },
   { path: '/appointments', name: 'Lịch hẹn', icon: CalendarCheck },
-  { path: '/records', name: 'Bệnh án', icon: FileText },
   { path: '/prescriptions', name: 'Đơn thuốc', icon: Pill },
   { path: '/invoices', name: 'Hóa đơn', icon: CreditCard },
 ];

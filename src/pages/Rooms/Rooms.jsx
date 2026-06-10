@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { Plus, Search, Edit2, Trash2, X, Users, Calendar } from 'lucide-react';
 import { fetchWithAuth } from '../../api';
+import Pagination from '../../components/Pagination/Pagination';
 import styles from './Rooms.module.css';
 
 const emptyForm = {
@@ -26,6 +27,8 @@ const Rooms = () => {
     const [saving, setSaving] = useState(false);
     const [deleteTarget, setDeleteTarget] = useState(null);
     const [toast, setToast] = useState(null);
+    const [currentPage, setCurrentPage] = useState(1);
+    const pageSize = 10;
 
     // Assignment states
     const [assignmentModalOpen, setAssignmentModalOpen] = useState(false);
@@ -67,6 +70,13 @@ const Rooms = () => {
     };
 
     useEffect(() => { fetchRooms(); fetchSpecialties(); }, [fetchRooms]);
+
+    useEffect(() => { setCurrentPage(1); }, [keyword, statusFilter]);
+
+    const indexOfLastItem = currentPage * pageSize;
+    const indexOfFirstItem = indexOfLastItem - pageSize;
+    const currentRooms = rooms.slice(indexOfFirstItem, indexOfLastItem);
+    const totalPages = Math.ceil(rooms.length / pageSize);
 
     const openAdd = () => {
         setEditing(null);
@@ -288,8 +298,8 @@ const Rooms = () => {
                         </thead>
                         <tbody>
                             {loading ? <tr><td colSpan={7} style={{ textAlign: 'center', padding: 40, color: 'var(--text-tertiary)' }}>Đang tải...</td></tr>
-                                : rooms.length === 0 ? <tr><td colSpan={7} style={{ textAlign: 'center', padding: 40, color: 'var(--text-tertiary)' }}>Không tìm thấy</td></tr>
-                                    : rooms.map(r => (
+                                : currentRooms.length === 0 ? <tr><td colSpan={7} style={{ textAlign: 'center', padding: 40, color: 'var(--text-tertiary)' }}>Không tìm thấy</td></tr>
+                                    : currentRooms.map(r => (
                                         <tr key={r.roomId}>
                                             <td className={styles.fw500}>{r.roomCode}</td>
                                             <td>{r.roomName}</td>
@@ -309,6 +319,13 @@ const Rooms = () => {
                         </tbody>
                     </table>
                 </div>
+                {!loading && currentRooms.length > 0 && (
+                    <Pagination
+                        currentPage={currentPage}
+                        totalPages={totalPages}
+                        onPageChange={setCurrentPage}
+                    />
+                )}
             </div>
 
             {modalOpen && (

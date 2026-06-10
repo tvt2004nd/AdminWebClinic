@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { Search, X, Eye, CheckCircle } from 'lucide-react';
 import { fetchWithAuth } from '../../api';
+import Pagination from '../../components/Pagination/Pagination';
 import styles from './Invoices.module.css';
 
 const STATUS_LABELS = {
@@ -25,7 +26,7 @@ const Invoices = () => {
   const [page, setPage] = useState(0);
   const [totalPages, setTotalPages] = useState(0);
   const [totalElements, setTotalElements] = useState(0);
-  const pageSize = 20;
+  const pageSize = 10;
   const [detailInvoice, setDetailInvoice] = useState(null);
   const [paying, setPaying] = useState(false);
   const [toast, setToast] = useState(null);
@@ -50,7 +51,7 @@ const Invoices = () => {
           list = list.filter((inv) => inv.paymentStatus === statusFilter);
         }
         setInvoices(list);
-        setPage(data.page);
+        setPage(data.number !== undefined ? data.number : (data.page || 0));
         setTotalPages(data.totalPages);
         setTotalElements(data.totalElements);
       }
@@ -129,6 +130,7 @@ const Invoices = () => {
               <option key={f.value} value={f.value}>{f.label}</option>
             ))}
           </select>
+          <span className={styles.totalCount}>Tổng: {totalElements}</span>
         </div>
 
         <div className={styles.tableContainer}>
@@ -176,43 +178,12 @@ const Invoices = () => {
           </table>
         </div>
 
-        {totalPages > 1 && (
-          <div className={styles.paginationBar}>
-            <span>Tổng số: {totalElements} hóa đơn</span>
-            <div className={styles.pageControls}>
-              <button disabled={page === 0} onClick={() => setPage(p => Math.max(0, p - 1))} className={styles.pageBtn}>Trước</button>
-              {(() => {
-                const items = [];
-                const total = totalPages;
-                const current = page;
-                const addPage = (i) => items.push(
-                  <button key={i} onClick={() => setPage(i)} className={`${styles.pageBtn} ${i === current ? styles.activePage : ''}`}>{i + 1}</button>
-                );
-                const addEllipsis = (k) => items.push(<span key={`e${k}`} className={styles.ellipsis}>...</span>);
-                addPage(0);
-                if (total <= 7) {
-                  for (let i = 1; i < total - 1; i++) addPage(i);
-                } else {
-                  if (current <= 2) {
-                    for (let i = 1; i <= 3; i++) addPage(i);
-                    addEllipsis(1);
-                  } else if (current >= total - 3) {
-                    addEllipsis(2);
-                    for (let i = total - 4; i < total - 1; i++) addPage(i);
-                  } else {
-                    addEllipsis(3);
-                    addPage(current - 1);
-                    addPage(current);
-                    addPage(current + 1);
-                    addEllipsis(4);
-                  }
-                }
-                if (total > 1) addPage(total - 1);
-                return items;
-              })()}
-              <button disabled={page >= totalPages - 1} onClick={() => setPage(p => Math.min(totalPages - 1, p + 1))} className={styles.pageBtn}>Sau</button>
-            </div>
-          </div>
+        {!loading && invoices.length > 0 && (
+          <Pagination
+            currentPage={page + 1}
+            totalPages={totalPages}
+            onPageChange={(p) => setPage(p - 1)}
+          />
         )}
       </div>
 

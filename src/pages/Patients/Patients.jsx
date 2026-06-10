@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { Plus, Search, Edit2, Trash2, X, Eye } from 'lucide-react';
 import { fetchWithAuth } from '../../api';
+import Pagination from '../../components/Pagination/Pagination';
 import styles from './Patients.module.css';
 
 const emptyForm = {
@@ -26,6 +27,8 @@ const Patients = () => {
   const [deleteTarget, setDeleteTarget] = useState(null);
   const [detail, setDetail] = useState(null);
   const [toast, setToast] = useState(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const pageSize = 10;
 
   const showToast = (message, type) => {
     setToast({ message, type });
@@ -46,6 +49,13 @@ const Patients = () => {
   }, [keyword]);
 
   useEffect(() => { fetchPatients(); }, [fetchPatients]);
+
+  useEffect(() => { setCurrentPage(1); }, [keyword]);
+
+  const indexOfLastItem = currentPage * pageSize;
+  const indexOfFirstItem = indexOfLastItem - pageSize;
+  const currentPatients = patients.slice(indexOfFirstItem, indexOfLastItem);
+  const totalPages = Math.ceil(patients.length / pageSize);
 
   const openAdd = () => {
     setEditing(null);
@@ -172,8 +182,8 @@ const Patients = () => {
             </thead>
             <tbody>
               {loading ? <tr><td colSpan={8} style={{ textAlign:'center', padding:40, color:'var(--text-tertiary)' }}>Đang tải...</td></tr>
-              : patients.length === 0 ? <tr><td colSpan={8} style={{ textAlign:'center', padding:40, color:'var(--text-tertiary)' }}>Không tìm thấy</td></tr>
-              : patients.map(p => (
+              : currentPatients.length === 0 ? <tr><td colSpan={8} style={{ textAlign:'center', padding:40, color:'var(--text-tertiary)' }}>Không tìm thấy</td></tr>
+              : currentPatients.map(p => (
                 <tr key={p.patientId}>
                   <td className={styles.fw500}>{p.patientCode}</td>
                   <td>{p.fullName}</td>
@@ -194,6 +204,13 @@ const Patients = () => {
             </tbody>
           </table>
         </div>
+        {!loading && currentPatients.length > 0 && (
+          <Pagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onPageChange={setCurrentPage}
+          />
+        )}
       </div>
 
       {modalOpen && (

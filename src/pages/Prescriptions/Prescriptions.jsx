@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { Plus, Search, Edit2, Trash2, Upload, X, CheckCircle, AlertCircle } from 'lucide-react';
 import { fetchWithAuth } from '../../api';
+import Pagination from '../../components/Pagination/Pagination';
 import styles from './Prescriptions.module.css';
 
 const API_BASE = '/api/admin/medications';
@@ -39,7 +40,7 @@ const Prescriptions = () => {
   const [page, setPage] = useState(0);
   const [totalPages, setTotalPages] = useState(0);
   const [totalElements, setTotalElements] = useState(0);
-  const pageSize = 20;
+  const pageSize = 10;
   const [modalOpen, setModalOpen] = useState(false);
   const [editing, setEditing] = useState(null);
   const [form, setForm] = useState({ ...emptyForm });
@@ -66,7 +67,7 @@ const Prescriptions = () => {
       if (res.ok) {
         const data = await res.json();
         setMedications(data.content);
-        setPage(data.page);
+        setPage(data.number !== undefined ? data.number : (data.page || 0));
         setTotalPages(data.totalPages);
         setTotalElements(data.totalElements);
       }
@@ -256,6 +257,7 @@ const Prescriptions = () => {
               onChange={(e) => { setKeyword(e.target.value); setPage(0); }}
             />
           </div>
+          <span className={styles.totalCount}>Tổng: {totalElements}</span>
         </div>
 
         <div className={styles.tableContainer}>
@@ -325,75 +327,13 @@ const Prescriptions = () => {
           </table>
         </div>
 
-      {totalPages > 1 && (
-        <div style={{
-          display: 'flex', justifyContent: 'space-between', alignItems: 'center',
-          padding: '12px 16px',
-          fontSize: '0.875rem', color: 'var(--text-secondary)'
-        }}>
-          <span>Tổng số: {totalElements} thuốc</span>
-          <div style={{ display: 'flex', gap: 4, alignItems: 'center' }}>
-            <button
-              disabled={page === 0}
-              onClick={() => setPage(p => Math.max(0, p - 1))}
-              style={{
-                padding: '6px 12px', border: '1px solid var(--border-color)',
-                borderRadius: 6, background: page === 0 ? 'var(--bg-secondary)' : 'var(--bg-primary)',
-                color: page === 0 ? 'var(--text-tertiary)' : 'var(--text-primary)',
-                cursor: page === 0 ? 'not-allowed' : 'pointer', fontSize: '0.8125rem'
-              }}
-            >Trước</button>
-            {(() => {
-              const items = [];
-              const total = totalPages;
-              const current = page;
-              const addPage = (i) => items.push(
-                <button key={i} onClick={() => setPage(i)} style={{
-                  width: 32, height: 32, border: '1px solid var(--border-color)',
-                  borderRadius: 6,
-                  background: i === current ? 'var(--primary)' : 'var(--bg-primary)',
-                  color: i === current ? '#fff' : 'var(--text-primary)',
-                  fontWeight: i === current ? 600 : 400,
-                  cursor: 'pointer', fontSize: '0.8125rem'
-                }}>{i + 1}</button>
-              );
-              const addEllipsis = (k) => items.push(
-                <span key={`e${k}`} style={{ padding: '0 4px', color: 'var(--text-tertiary)' }}>...</span>
-              );
-              addPage(0);
-              if (total <= 7) {
-                for (let i = 1; i < total - 1; i++) addPage(i);
-              } else {
-                if (current <= 2) {
-                  for (let i = 1; i <= 3; i++) addPage(i);
-                  addEllipsis(1);
-                } else if (current >= total - 3) {
-                  addEllipsis(2);
-                  for (let i = total - 4; i < total - 1; i++) addPage(i);
-                } else {
-                  addEllipsis(3);
-                  addPage(current - 1);
-                  addPage(current);
-                  addPage(current + 1);
-                  addEllipsis(4);
-                }
-              }
-              if (total > 1) addPage(total - 1);
-              return items;
-            })()}
-            <button
-              disabled={page >= totalPages - 1}
-              onClick={() => setPage(p => Math.min(totalPages - 1, p + 1))}
-              style={{
-                padding: '6px 12px', border: '1px solid var(--border-color)',
-                borderRadius: 6, background: page >= totalPages - 1 ? 'var(--bg-secondary)' : 'var(--bg-primary)',
-                color: page >= totalPages - 1 ? 'var(--text-tertiary)' : 'var(--text-primary)',
-                cursor: page >= totalPages - 1 ? 'not-allowed' : 'pointer', fontSize: '0.8125rem'
-              }}
-            >Sau</button>
-          </div>
-        </div>
-      )}
+        {!loading && medications.length > 0 && (
+          <Pagination
+            currentPage={page + 1}
+            totalPages={totalPages}
+            onPageChange={(p) => setPage(p - 1)}
+          />
+        )}
       </div>
 
       {modalOpen && (
