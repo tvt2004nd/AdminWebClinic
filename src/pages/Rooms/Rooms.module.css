@@ -157,25 +157,6 @@
     font-weight: 500;
 }
 
-.doctorInfo {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    font-weight: 500;
-}
-
-.avatar {
-    width: 32px;
-    height: 32px;
-    background-color: var(--primary-light);
-    color: var(--primary-hover);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: 600;
-}
-
 .badge {
     display: inline-block;
     padding: 4px 12px;
@@ -186,25 +167,28 @@
     font-weight: 500;
 }
 
-.star {
-    color: #f59e0b;
-}
-
-.statusDot {
+.statusBadge {
     display: inline-block;
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    margin-right: 6px;
-    vertical-align: middle;
+    padding: 6px 12px;
+    border-radius: var(--radius-full);
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
 }
 
-.active {
-    background-color: #22c55e;
+.statusActive {
+    background-color: #ecfdf5;
+    color: #065f46;
 }
 
-.inactive {
-    background-color: #ef4444;
+.statusMaintenance {
+    background-color: #fef3c7;
+    color: #92400e;
+}
+
+.statusInactive {
+    background-color: #fef2f2;
+    color: #991b1b;
 }
 
 .actions {
@@ -258,10 +242,6 @@
     box-shadow: var(--shadow-lg);
 }
 
-.scheduleModal {
-    max-width: 980px;
-}
-
 .modalHeader {
     display: flex;
     justify-content: space-between;
@@ -300,254 +280,6 @@
     display: flex;
     flex-direction: column;
     gap: 16px;
-}
-
-.scheduleLayout {
-    display: grid;
-    grid-template-columns: 1fr 1.1fr;
-    gap: 20px;
-}
-
-.scheduleColumn {
-    min-width: 0;
-}
-
-.scheduleFormPanel,
-.scheduleListPanel {
-    background-color: var(--bg-color);
-    border: 1px solid var(--border-color);
-    border-radius: var(--radius-lg);
-    padding: 16px;
-}
-
-.scheduleWarning {
-    margin-top: 12px;
-    padding: 14px 16px;
-    border-radius: var(--radius-lg);
-    border: 1px solid #fbbf24;
-    background: linear-gradient(180deg, #fffbeb 0%, #fef3c7 100%);
-    color: #92400e;
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-}
-
-.scheduleWarningTitle {
-    font-size: 0.875rem;
-    font-weight: 700;
-    color: #92400e;
-}
-
-.scheduleWarningText {
-    font-size: 0.875rem;
-    font-weight: 500;
-    color: #92400e;
-}
-
-.scheduleWarningDetails {
-    font-size: 0.8125rem;
-    color: #a16207;
-    display: grid;
-    gap: 4px;
-}
-
-.schedulePanelHeader {
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-    gap: 12px;
-    margin-bottom: 12px;
-}
-
-.schedulePanelTitle {
-    font-size: 1rem;
-    font-weight: 600;
-    color: var(--text-primary);
-    margin-bottom: 4px;
-}
-
-.schedulePanelSubtitle {
-    font-size: 0.8125rem;
-    color: var(--text-secondary);
-}
-
-.scheduleList {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    max-height: 420px;
-    overflow-y: auto;
-    padding-right: 4px;
-}
-
-.suggestionsPanel {
-    margin-bottom: 12px;
-}
-
-.suggestionsTitle {
-    font-size: 0.875rem;
-    font-weight: 600;
-    color: var(--text-primary);
-    margin-bottom: 8px;
-}
-
-.suggestionsList {
-    display: flex;
-    gap: 8px;
-    flex-wrap: wrap;
-    margin-bottom: 8px;
-}
-
-.suggestionCard {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    padding: 8px 12px;
-    border-radius: var(--radius-md);
-    border: 1px solid var(--border-color);
-    background-color: var(--surface-color);
-    cursor: pointer;
-    font-weight: 600;
-}
-
-.suggestionAvailable {
-    background-color: #ecfdf5;
-    border-color: #bbf7d0;
-    color: #065f46;
-}
-
-.suggestionUnavailable {
-    background-color: #f8fafc;
-    border-color: #e2e8f0;
-    color: #94a3b8;
-    cursor: not-allowed;
-}
-
-.suggestionEmpty {
-    padding: 10px;
-    color: var(--text-secondary);
-}
-
-.suggestionTime {
-    font-size: 0.875rem;
-}
-
-.scheduleState {
-    padding: 18px;
-    border-radius: var(--radius-md);
-    background-color: var(--surface-color);
-    border: 1px dashed var(--border-color);
-    color: var(--text-secondary);
-    font-size: 0.875rem;
-    text-align: center;
-}
-
-.scheduleCard {
-    background-color: var(--surface-color);
-    border: 1px solid var(--border-color);
-    border-radius: var(--radius-lg);
-    padding: 14px;
-    box-shadow: var(--shadow-sm);
-}
-
-.scheduleCardHeader {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 12px;
-    margin-bottom: 12px;
-}
-
-.scheduleCardTitle {
-    font-size: 0.875rem;
-    font-weight: 600;
-    color: var(--text-primary);
-}
-
-.scheduleCardGrid {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 10px;
-}
-
-.scheduleInfoItem {
-    display: flex;
-    justify-content: space-between;
-    align-items: baseline;
-    gap: 12px;
-}
-
-.scheduleInfoLabel {
-    font-size: 0.8125rem;
-    color: var(--text-secondary);
-}
-
-.scheduleInfoValue {
-    font-size: 0.875rem;
-    font-weight: 600;
-    color: var(--text-primary);
-    text-align: right;
-}
-
-.scheduleStatusBadge {
-    padding: 4px 10px;
-    border-radius: var(--radius-full);
-    font-size: 0.75rem;
-    font-weight: 600;
-    white-space: nowrap;
-}
-
-.scheduleStatusavailable {
-    background-color: #ecfdf5;
-    color: #065f46;
-}
-
-.scheduleStatusfull {
-    background-color: #fef3c7;
-    color: #92400e;
-}
-
-.scheduleStatusinactive {
-    background-color: #f1f5f9;
-    color: #475569;
-}
-
-.scheduleStatuscompleted {
-    background-color: #eef2ff;
-    color: #4338ca;
-}
-
-.scheduleDoctorName {
-    padding: 6px 10px;
-    border-radius: var(--radius-full);
-    background-color: #f8fafc;
-    color: var(--text-primary);
-    font-weight: 600;
-    font-size: 0.8125rem;
-}
-
-.scheduleCardActions {
-    display: flex;
-    gap: 8px;
-    margin-top: 10px;
-    justify-content: flex-end;
-}
-
-@media (max-width: 960px) {
-    .scheduleLayout {
-        grid-template-columns: 1fr;
-    }
-}
-
-@media (max-width: 640px) {
-    .scheduleInfoItem {
-        flex-direction: column;
-        align-items: flex-start;
-    }
-
-    .scheduleInfoValue {
-        text-align: left;
-    }
 }
 
 .formRow {
@@ -599,6 +331,106 @@
     outline: none;
     border-color: var(--primary-color);
     box-shadow: 0 0 0 3px var(--primary-light);
+}
+
+.dropdownPanel {
+    position: absolute;
+    z-index: 30;
+    top: calc(100% + 8px);
+    left: 0;
+    right: 0;
+    max-height: 260px;
+    overflow-y: auto;
+    background-color: var(--surface-color);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-lg);
+}
+
+.dropdownItem {
+    width: 100%;
+    padding: 12px 14px;
+    border: none;
+    background: none;
+    text-align: left;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.dropdownItem:hover {
+    background-color: var(--surface-hover);
+}
+
+.dropdownItemTitle {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.dropdownItemMeta {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    color: var(--text-secondary);
+    font-size: 0.8rem;
+    align-items: center;
+}
+
+.doctorSchedulesPanel {
+    margin-top: 12px;
+    padding: 8px;
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    background-color: var(--bg-color);
+}
+
+.dropdownEmpty {
+    padding: 12px 14px;
+    color: var(--text-secondary);
+    text-align: center;
+}
+
+.doctorSelectControl {
+    position: relative;
+}
+
+.doctorClearBtn {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    border: none;
+    background: transparent;
+    color: var(--text-secondary);
+    font-size: 1.1rem;
+    cursor: pointer;
+    padding: 0;
+}
+
+.doctorSelection {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 8px;
+    align-items: center;
+}
+
+.doctorLabel {
+    color: var(--text-secondary);
+    font-size: 0.85rem;
+}
+
+.doctorBadge {
+    display: inline-flex;
+    align-items: center;
+    padding: 4px 10px;
+    background-color: #f0f9ff;
+    color: #055160;
+    border-radius: var(--radius-full);
+    font-size: 0.75rem;
+    font-weight: 600;
 }
 
 .formTextarea {
@@ -763,5 +595,55 @@
     to {
         transform: translateX(0);
         opacity: 1;
+    }
+}
+
+@media (max-width: 1024px) {
+    .modal {
+        max-width: calc(100% - 40px);
+    }
+
+    .formRow {
+        grid-template-columns: 1fr;
+    }
+
+    .toolbar {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .searchContainer {
+        max-width: 100%;
+    }
+
+    .filters {
+        width: 100%;
+        flex-wrap: wrap;
+    }
+}
+
+@media (max-width: 768px) {
+    .header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
+    }
+
+    .primaryBtn {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .tableContainer {
+        font-size: 0.75rem;
+    }
+
+    .table th,
+    .table td {
+        padding: 12px 8px;
+    }
+
+    .title {
+        font-size: 1.25rem;
     }
 }
